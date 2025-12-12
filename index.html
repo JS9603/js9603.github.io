@@ -29,125 +29,71 @@
             padding: 1.5rem;
             text-align: center;
         }
-        .header h2 {
-            margin: 0;
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-        .tabs {
-            display: flex;
-            background-color: #ecf0f1;
-            border-bottom: 1px solid #ddd;
-        }
+        .header h2 { margin: 0; font-size: 1.4rem; font-weight: 600; }
+        .tabs { display: flex; background-color: #ecf0f1; border-bottom: 1px solid #ddd; }
         .tab-btn {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-weight: bold;
-            color: #7f8c8d;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
+            flex: 1; padding: 1rem; border: none; background: none;
+            cursor: pointer; font-weight: bold; color: #7f8c8d;
+            transition: all 0.3s; border-bottom: 3px solid transparent;
         }
         .tab-btn.active {
-            color: #2c3e50;
-            border-bottom: 3px solid #e74c3c;
-            background-color: white;
+            color: #2c3e50; border-bottom: 3px solid #e74c3c; background-color: white;
         }
-        .tab-content {
-            padding: 2rem;
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #34495e;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
+        .tab-content { padding: 2rem; display: none; }
+        .tab-content.active { display: block; }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #34495e; font-weight: 600; font-size: 0.95rem; }
         input, select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #dfe6e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            text-align: right;
-            transition: border-color 0.2s;
+            width: 100%; padding: 0.8rem; border: 1px solid #dfe6e9;
+            border-radius: 8px; font-size: 1rem; box-sizing: border-box;
+            text-align: right; transition: border-color 0.2s;
+        }
+        input.input-readonly {
+            background-color: #f1f2f6; color: #7f8c8d; border: 1px solid #dcdde1; pointer-events: none;
         }
         select { text-align: left; }
         input:focus, select:focus {
-            outline: none;
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            outline: none; border-color: #e74c3c; box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
         }
         button.action-btn {
-            width: 100%;
-            padding: 1rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            margin-top: 1rem;
+            width: 100%; padding: 1rem; border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: bold; cursor: pointer;
+            transition: opacity 0.2s; margin-top: 1rem;
         }
         .btn-check { background-color: #e74c3c; color: white; }
         button:hover { opacity: 0.9; }
 
-        /* 파일 업로드 및 상태 표시 스타일 */
+        /* 드래그 앤 드롭 영역 스타일 */
         .file-upload-wrapper {
-            margin-bottom: 2rem;
-            padding: 2rem 1.5rem;
-            border: 2px dashed #bdc3c7;
-            border-radius: 8px;
-            text-align: center;
-            background-color: #f9f9f9;
+            margin-bottom: 2rem; padding: 2rem 1.5rem;
+            border: 2px dashed #bdc3c7; border-radius: 8px;
+            text-align: center; background-color: #f9f9f9;
+            transition: all 0.3s;
+        }
+        /* 드래그 중일 때 스타일 */
+        .file-upload-wrapper.drag-over {
+            background-color: #eaf6fd;
+            border-color: #3498db;
+            transform: scale(1.02);
+        }
+        .file-upload-label {
+            display: block; margin-bottom: 1rem; color: #2980b9; font-size: 0.95rem; font-weight: bold;
         }
         .status-box {
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
+            padding: 1rem; border-radius: 8px; text-align: center;
+            font-weight: bold; margin-bottom: 1.5rem;
         }
-        .status-ok {
-            background-color: #d4efdf;
-            color: #1e8449;
-            border: 1px solid #a9dfbf;
-        }
-        .status-none {
-            background-color: #fadbd8;
-            color: #c0392b;
-            border: 1px solid #f1948a;
-        }
+        .status-ok { background-color: #d4efdf; color: #1e8449; border: 1px solid #a9dfbf; }
+        .status-none { background-color: #fadbd8; color: #c0392b; border: 1px solid #f1948a; }
         .download-link {
-            display: inline-block;
-            margin-top: 1rem;
-            font-size: 0.8rem;
-            color: #3498db;
-            text-decoration: underline;
-            cursor: pointer;
+            display: inline-block; margin-top: 1rem; font-size: 0.8rem;
+            color: #7f8c8d; text-decoration: underline; cursor: pointer;
         }
-
         #result {
-            margin-top: 1.5rem;
-            padding: 1.2rem;
-            border-radius: 8px;
-            display: none;
-            text-align: center;
-            line-height: 1.6;
-            animation: fadeIn 0.3s;
+            margin-top: 1.5rem; padding: 1.2rem; border-radius: 8px;
+            display: none; text-align: center; line-height: 1.6; animation: fadeIn 0.3s;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        
         .result-danger { background-color: #fadbd8; color: #c0392b; border: 2px solid #e74c3c; }
         .result-warning { background-color: #fdebd0; color: #d35400; border: 2px solid #e67e22; }
         .result-safe { background-color: #d4efdf; color: #1e8449; border: 1px solid #a9dfbf; }
@@ -171,8 +117,8 @@
             <select id="contractType">
                 <option value="revenue">단일판매ㆍ공급계약</option>
                 <option value="asset">유형자산 취득ㆍ처분</option>
-                <option value="borrowing">금전 차입ㆍ대여 발생</option>
-                <option value="litigation">소송ㆍ경영분쟁 발생</option>
+                <option value="borrowing">금전 차입ㆍ대여</option>
+                <option value="litigation">소송ㆍ경영분쟁</option>
             </select>
         </div>
 
@@ -192,22 +138,99 @@
             🔒 기초 정보가 설정되지 않았습니다.
         </div>
 
-        <div class="file-upload-wrapper">
-            <label style="display:block; margin-bottom:10px; color:#555;">
-                보안을 위해 <strong>숫자는 화면에 표시되지 않습니다.</strong><br>
-                관리자가 배포한 파일을 업로드해주세요.
+        <div class="file-upload-wrapper" id="dropZone">
+            <label class="file-upload-label" for="configInput">
+                📂 <strong>설정 파일(.json)</strong>을<br>여기로 드래그하거나 클릭하세요.
             </label>
-            <input type="file" id="configInput" accept=".json" style="display:none" onchange="loadConfigFile()">
-            <button onclick="document.getElementById('configInput').click()" style="padding:0.7rem 1.5rem; background:#3498db; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">📂 설정 파일 업로드</button>
+            <input type="file" id="configInput" accept=".json" style="display:none" onchange="handleFiles(this.files)">
+            <button onclick="document.getElementById('configInput').click()" style="padding:0.7rem 1.5rem; background:#3498db; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">파일 선택</button>
             <br><br>
             <button onclick="clearData()" style="padding:0.5rem 1rem; background:#95a5a6; color:white; border:none; border-radius:4px; font-size:0.8rem; cursor:pointer;">🗑️ 정보 삭제 (초기화)</button>
             <br>
             <a class="download-link" onclick="downloadTemplate()">[관리자용] 설정 파일 양식 다운로드</a>
         </div>
+
+        <div style="border-top:1px solid #eee; padding-top:1.5rem;">
+            <div class="form-group">
+                <label>🔒 현재 적용된 매출액</label>
+                <input type="text" id="baseRevenue" class="input-readonly" placeholder="파일을 업로드하세요" readonly>
+            </div>
+            <div class="form-group">
+                <label>🔒 현재 적용된 자산총액</label>
+                <input type="text" id="baseAsset" class="input-readonly" placeholder="파일을 업로드하세요" readonly>
+            </div>
+            <div class="form-group">
+                <label>🔒 현재 적용된 자본총계</label>
+                <input type="text" id="baseEquity" class="input-readonly" placeholder="파일을 업로드하세요" readonly>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
+    // 드래그 앤 드롭 이벤트 리스너 설정
+    const dropZone = document.getElementById('dropZone');
+
+    // 드래그 중일 때 스타일 변경
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+
+    // 드래그가 영역을 벗어났을 때 스타일 복구
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+
+    // 파일을 놓았을 때 (Drop)
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFiles(files);
+        }
+    });
+
+    // 파일 처리 함수 (Input change & Drop 공용)
+    function handleFiles(files) {
+        const file = files[0];
+        
+        // 확장자 체크
+        if (!file.name.endsWith('.json')) {
+            alert("❌ .json 파일만 업로드할 수 있습니다.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (data.revenue && data.asset && data.equity) {
+                    // 화면 표시 (콤마 적용)
+                    document.getElementById('baseRevenue').value = comma(uncomma(data.revenue));
+                    document.getElementById('baseAsset').value = comma(uncomma(data.asset));
+                    document.getElementById('baseEquity').value = comma(uncomma(data.equity));
+                    
+                    // 로컬 스토리지 자동 저장
+                    localStorage.setItem('wisenut_revenue', uncomma(data.revenue));
+                    localStorage.setItem('wisenut_asset', uncomma(data.asset));
+                    localStorage.setItem('wisenut_equity', uncomma(data.equity));
+
+                    alert("✅ 설정이 완료되었습니다.\n[계약 검토] 탭에서 바로 사용 가능합니다.");
+                    updateStatusUI();
+                    document.getElementsByClassName('tab-btn')[0].click(); // 검토 탭으로 이동
+                } else {
+                    alert("❌ 파일 형식이 올바르지 않습니다. (필수 항목 누락)");
+                }
+            } catch (error) {
+                alert("❌ 파일 읽기 중 오류가 발생했습니다.");
+            }
+        };
+        reader.readAsText(file);
+    }
+
     function openTab(tabName) {
         const contents = document.getElementsByClassName('tab-content');
         for (let i = 0; i < contents.length; i++) { contents[i].classList.remove('active'); }
@@ -217,71 +240,46 @@
         event.currentTarget.classList.add('active');
     }
 
-    // 페이지 로드 시 상태 확인
     window.onload = function() {
-        updateStatusUI();
-    }
-
-    // 로컬 스토리지에 데이터가 있는지 확인하고 UI 업데이트
-    function updateStatusUI() {
         const savedRevenue = localStorage.getItem('wisenut_revenue');
         const savedAsset = localStorage.getItem('wisenut_asset');
         const savedEquity = localStorage.getItem('wisenut_equity');
+        
+        if(savedRevenue) document.getElementById('baseRevenue').value = comma(uncomma(savedRevenue));
+        if(savedAsset) document.getElementById('baseAsset').value = comma(uncomma(savedAsset));
+        if(savedEquity) document.getElementById('baseEquity').value = comma(uncomma(savedEquity));
+        updateStatusUI();
+    }
+
+    function updateStatusUI() {
+        const savedRevenue = localStorage.getItem('wisenut_revenue');
         const statusDiv = document.getElementById('statusDisplay');
 
-        if (savedRevenue && savedAsset && savedEquity) {
+        if (savedRevenue) {
             statusDiv.className = "status-box status-ok";
             statusDiv.innerHTML = "✅ 기초 정보 설정 완료<br><span style='font-size:0.8rem; font-weight:normal;'>(데이터가 브라우저에 안전하게 저장되었습니다)</span>";
         } else {
             statusDiv.className = "status-box status-none";
-            statusDiv.innerHTML = "🔒 기초 정보가 없습니다.<br><span style='font-size:0.8rem; font-weight:normal;'>(파일을 업로드 해주세요)</span>";
+            statusDiv.innerHTML = "🔒 기초 정보가 없습니다.<br><span style='font-size:0.8rem; font-weight:normal;'>(파일을 드래그하거나 선택해주세요)</span>";
         }
     }
 
-    // 설정 파일 불러오기 및 자동 저장
-    function loadConfigFile() {
-        const fileInput = document.getElementById('configInput');
-        const file = fileInput.files[0];
-        
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.revenue && data.asset && data.equity) {
-                        // 로컬 스토리지 자동 저장 (화면 표시 X)
-                        localStorage.setItem('wisenut_revenue', uncomma(data.revenue));
-                        localStorage.setItem('wisenut_asset', uncomma(data.asset));
-                        localStorage.setItem('wisenut_equity', uncomma(data.equity));
-
-                        alert("✅ 보안 설정이 완료되었습니다.\n숫자는 화면에 표시되지 않으며,\n[계약 검토] 탭에서 즉시 사용 가능합니다.");
-                        updateStatusUI();
-                        
-                        // 자동으로 검토 탭 이동
-                        document.getElementsByClassName('tab-btn')[0].click();
-                    } else {
-                        alert("❌ 파일 형식이 올바르지 않습니다. (필수 항목 누락)");
-                    }
-                } catch (error) {
-                    alert("❌ 파일 읽기 중 오류가 발생했습니다.");
-                }
-            };
-            reader.readAsText(file);
-        }
-    }
-
-    // 데이터 초기화
     function clearData() {
         if(confirm("저장된 기초 정보를 삭제하시겠습니까?")) {
             localStorage.removeItem('wisenut_revenue');
             localStorage.removeItem('wisenut_asset');
             localStorage.removeItem('wisenut_equity');
+            
+            // 화면 초기화
+            document.getElementById('baseRevenue').value = "";
+            document.getElementById('baseAsset').value = "";
+            document.getElementById('baseEquity').value = "";
+            
             updateStatusUI();
             alert("삭제되었습니다.");
         }
     }
 
-    // 관리자용 양식 다운로드
     function downloadTemplate() {
         const template = {
             "revenue": "35000000000",
@@ -307,34 +305,30 @@
         
         if (!contractAmountStr) { alert("금액을 입력해주세요."); return; }
 
-        // 로컬 스토리지에서 값 가져오기
-        const savedRevenue = localStorage.getItem('wisenut_revenue');
-        const savedAsset = localStorage.getItem('wisenut_asset');
-        const savedEquity = localStorage.getItem('wisenut_equity');
-
-        // 데이터 존재 여부 확인
-        if (!savedRevenue || !savedAsset || !savedEquity) {
-            alert("⚠️ 기초 정보가 설정되지 않았습니다.\n[기초 정보 설정] 탭에서 파일을 업로드해주세요.");
-            document.getElementsByClassName('tab-btn')[1].click(); // 설정 탭으로 이동
-            return;
-        }
-
         const contractAmount = parseFloat(contractAmountStr);
         let baseAmount = 0;
         let baseName = "";
         let mandatoryLimit = 10; 
 
+        const revVal = localStorage.getItem('wisenut_revenue');
+        const assVal = localStorage.getItem('wisenut_asset');
+        const equVal = localStorage.getItem('wisenut_equity');
+
         if (type === 'revenue') {
-            baseAmount = parseFloat(savedRevenue);
+            if(!revVal) { alert("기초 정보가 없습니다. 파일을 업로드해주세요."); document.getElementsByClassName('tab-btn')[1].click(); return; }
+            baseAmount = parseFloat(revVal);
             baseName = "매출액";
         } else if (type === 'asset') {
-            baseAmount = parseFloat(savedAsset);
+            if(!assVal) { alert("기초 정보가 없습니다. 파일을 업로드해주세요."); document.getElementsByClassName('tab-btn')[1].click(); return; }
+            baseAmount = parseFloat(assVal);
             baseName = "자산총액";
         } else if (type === 'borrowing') {
-            baseAmount = parseFloat(savedEquity);
+            if(!equVal) { alert("기초 정보가 없습니다. 파일을 업로드해주세요."); document.getElementsByClassName('tab-btn')[1].click(); return; }
+            baseAmount = parseFloat(equVal);
             baseName = "자본총계";
         } else if (type === 'litigation') {
-            baseAmount = parseFloat(savedEquity);
+            if(!equVal) { alert("기초 정보가 없습니다. 파일을 업로드해주세요."); document.getElementsByClassName('tab-btn')[1].click(); return; }
+            baseAmount = parseFloat(equVal);
             baseName = "자본총계";
             mandatoryLimit = 5; 
         }
@@ -343,7 +337,6 @@
         const resultDiv = document.getElementById('result');
         resultDiv.style.display = 'block';
 
-        // 1. 의무 공시 대상
         if (ratio >= mandatoryLimit) {
             resultDiv.className = 'result-danger';
             resultDiv.innerHTML = `
@@ -352,9 +345,7 @@
                 <br>
                 <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">즉시 공시IR팀으로 사전 통지바랍니다.</span>
             `;
-        } 
-        // 2. 단일판매(매출) 특례: 5% ~ 10%
-        else if (type === 'revenue' && ratio >= 5) {
+        } else if (type === 'revenue' && ratio >= 5) {
             resultDiv.className = 'result-warning';
             resultDiv.innerHTML = `
                 📢 <strong>[사업보고서 기재] 대상입니다.</strong><br><br>
@@ -363,9 +354,7 @@
                 <br>
                 <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">반드시 공시IR팀으로 사전 통지바랍니다.</span>
             `;
-        } 
-        // 3. 그 외
-        else {
+        } else {
             resultDiv.className = 'result-safe';
             resultDiv.innerHTML = `
                 ✅ <strong>공시 의무 없음</strong><br><br>
