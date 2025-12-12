@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>단일판매ㆍ공급계약 공시 판독기</title>
+    <title>공시 의무 체크리스트</title>
     <style>
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            background-color: #f4f6f8;
+            background-color: #f8f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,157 +16,276 @@
         }
         .container {
             background-color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 0;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
             width: 100%;
-            max-width: 400px;
+            max-width: 480px;
+            overflow: hidden;
         }
-        h2 {
-            color: #1a202c;
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1.5rem;
             text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
         }
+        .header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        /* 탭 스타일 */
+        .tabs {
+            display: flex;
+            background-color: #ecf0f1;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: #7f8c8d;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-btn.active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            background-color: white;
+        }
+        .tab-content {
+            padding: 2rem;
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* 폼 스타일 */
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #4a5568;
+            color: #34495e;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
-        input {
+        input, select {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
+            padding: 0.8rem;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
             font-size: 1rem;
-            box-sizing: border-box; /* 패딩 포함 너비 계산 */
+            box-sizing: border-box;
             text-align: right;
+            transition: border-color 0.2s;
         }
-        input:focus {
+        select { text-align: left; }
+        input:focus, select:focus {
             outline: none;
-            border-color: #3182ce;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
-        button {
+        /* 버튼 스타일 */
+        button.action-btn {
             width: 100%;
-            padding: 0.75rem;
-            background-color: #2b6cb0;
-            color: white;
+            padding: 1rem;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
+            transition: opacity 0.2s;
             margin-top: 1rem;
-            transition: background-color 0.2s;
         }
-        button:hover {
-            background-color: #2c5282;
-        }
+        .btn-save { background-color: #7f8c8d; color: white; }
+        .btn-check { background-color: #3498db; color: white; }
+        button:hover { opacity: 0.9; }
+
+        /* 결과창 스타일 */
         #result {
             margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 6px;
+            padding: 1.2rem;
+            border-radius: 8px;
             display: none;
             text-align: center;
-            font-weight: bold;
+            line-height: 1.6;
+            animation: fadeIn 0.3s;
         }
-        .safe {
-            background-color: #c6f6d5;
-            color: #22543d;
-            border: 1px solid #9ae6b4;
-        }
-        .danger {
-            background-color: #fed7d7;
-            color: #822727;
-            border: 1px solid #feb2b2;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .result-danger { background-color: #fadbd8; color: #c0392b; border: 1px solid #f1948a; }
+        .result-warning { background-color: #fef9e7; color: #b7950b; border: 1px solid #f7dc6f; }
+        .result-safe { background-color: #d4efdf; color: #1e8449; border: 1px solid #a9dfbf; }
+
         .info-text {
-            font-size: 0.8rem;
-            color: #718096;
+            font-size: 0.85rem;
+            color: #95a5a6;
             margin-top: 0.5rem;
-            text-align: right;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>📋 계약 공시 판독기</h2>
-    
-    <div class="form-group">
-        <label for="revenue">최근 사업연도 매출액 (원)</label>
-        <input type="text" id="revenue" placeholder="예: 33,000,000,000" onkeyup="inputNumberFormat(this)">
-        <div class="info-text">*연결 재무제표 기준 (별도인 경우 별도)</div>
+    <div class="header">
+        <h2>✅ 공시 의무 체크리스트</h2>
     </div>
 
-    <div class="form-group">
-        <label for="contract">금번 계약 금액 (원)</label>
-        <input type="text" id="contract" placeholder="계약금액 입력" onkeyup="inputNumberFormat(this)">
-        <div class="info-text">*VAT 포함 여부 확인 (통상 별도 기준)</div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('check')">계약 검토</button>
+        <button class="tab-btn" onclick="openTab('setting')">기초 정보 설정</button>
     </div>
 
-    <button onclick="checkDisclosure()">판독 확인</button>
+    <div id="check" class="tab-content active">
+        <div class="form-group">
+            <label>📂 분석 항목 선택</label>
+            <select id="contractType">
+                <option value="revenue">단일판매ㆍ공급계약 (매출액 기준)</option>
+                <option value="asset">유형자산 취득ㆍ처분 (자산총액 기준)</option>
+            </select>
+        </div>
 
-    <div id="result"></div>
+        <div class="form-group">
+            <label>💸 금번 계약/취득 금액 (원)</label>
+            <input type="text" id="contractAmount" placeholder="금액 입력 (VAT 제외)" onkeyup="inputNumberFormat(this)">
+        </div>
+
+        <button class="action-btn btn-check" onclick="checkDisclosure()">공시 대상 확인하기</button>
+
+        <div id="result"></div>
+    </div>
+
+    <div id="setting" class="tab-content">
+        <div class="form-group">
+            <label>📊 최근 사업연도 매출액 (원)</label>
+            <input type="text" id="baseRevenue" placeholder="매출액 입력" onkeyup="inputNumberFormat(this)">
+        </div>
+        <div class="form-group">
+            <label>💰 최근 사업연도 자산총액 (원)</label>
+            <input type="text" id="baseAsset" placeholder="자산총액 입력" onkeyup="inputNumberFormat(this)">
+        </div>
+        <button class="action-btn btn-save" onclick="saveData()">💾 정보 저장하기</button>
+        <p class="info-text">* 입력한 정보는 이 PC(브라우저)에만 저장됩니다.</p>
+    </div>
 </div>
 
 <script>
-    // 숫자 3자리마다 콤마 찍기
+    // 탭 전환 기능
+    function openTab(tabName) {
+        // 모든 탭 컨텐츠 숨기기
+        const contents = document.getElementsByClassName('tab-content');
+        for (let i = 0; i < contents.length; i++) {
+            contents[i].classList.remove('active');
+        }
+        // 모든 탭 버튼 비활성화
+        const btns = document.getElementsByClassName('tab-btn');
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].classList.remove('active');
+        }
+        // 선택된 탭 활성화
+        document.getElementById(tabName).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // 페이지 로드 시 데이터 불러오기
+    window.onload = function() {
+        const savedRevenue = localStorage.getItem('wisenut_revenue');
+        const savedAsset = localStorage.getItem('wisenut_asset');
+        
+        if(savedRevenue) document.getElementById('baseRevenue').value = savedRevenue;
+        if(savedAsset) document.getElementById('baseAsset').value = savedAsset;
+    }
+
+    // 데이터 저장
+    function saveData() {
+        const revenue = document.getElementById('baseRevenue').value;
+        const asset = document.getElementById('baseAsset').value;
+        
+        localStorage.setItem('wisenut_revenue', revenue);
+        localStorage.setItem('wisenut_asset', asset);
+        
+        alert("✅ 기초 정보가 저장되었습니다.\n[계약 검토] 탭에서 바로 사용 가능합니다.");
+        // 자동으로 첫 번째 탭으로 이동
+        document.getElementsByClassName('tab-btn')[0].click();
+    }
+
+    // 콤마 찍기 유틸
     function inputNumberFormat(obj) {
         obj.value = comma(uncomma(obj.value));
     }
-
     function comma(str) {
         str = String(str);
         return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
     }
-
     function uncomma(str) {
         str = String(str);
         return str.replace(/[^\d]+/g, '');
     }
 
-    // 공시 여부 판단 로직
+    // 판독 로직
     function checkDisclosure() {
-        const revenueStr = uncomma(document.getElementById('revenue').value);
-        const contractStr = uncomma(document.getElementById('contract').value);
-
-        if (!revenueStr || !contractStr) {
-            alert("매출액과 계약금액을 모두 입력해주세요.");
+        const type = document.getElementById('contractType').value;
+        const contractAmountStr = uncomma(document.getElementById('contractAmount').value);
+        
+        if (!contractAmountStr) {
+            alert("금액을 입력해주세요.");
             return;
         }
 
-        const revenue = parseFloat(revenueStr);
-        const contract = parseFloat(contractStr);
-        
-        // 코스닥 공시 규정: 매출액의 10% 이상 (대규모법인은 5%이나, 일반적인 10% 적용)
-        const threshold = revenue * 0.10;
-        const ratio = (contract / revenue) * 100;
+        const contractAmount = parseFloat(contractAmountStr);
+        let baseAmount = 0;
+        let baseName = "";
 
+        if (type === 'revenue') {
+            const revStr = uncomma(document.getElementById('baseRevenue').value);
+            if(!revStr) { alert("기초 정보(매출액)가 없습니다.\n[기초 정보 설정] 탭에서 먼저 입력해주세요."); return; }
+            baseAmount = parseFloat(revStr);
+            baseName = "매출액";
+        } else {
+            const assetStr = uncomma(document.getElementById('baseAsset').value);
+            if(!assetStr) { alert("기초 정보(자산총액)가 없습니다.\n[기초 정보 설정] 탭에서 먼저 입력해주세요."); return; }
+            baseAmount = parseFloat(assetStr);
+            baseName = "자산총액";
+        }
+
+        // 비율 계산
+        const ratio = (contractAmount / baseAmount) * 100;
+        
         const resultDiv = document.getElementById('result');
         resultDiv.style.display = 'block';
 
-        if (contract >= threshold) {
-            resultDiv.className = 'danger';
+        // 판독 결과 출력
+        if (ratio >= 10) {
+            // 10% 이상: 의무 공시
+            resultDiv.className = 'result-danger';
             resultDiv.innerHTML = `
-                🚨 <strong>공시 의무 대상입니다!</strong><br><br>
-                계약금액이 매출액의 <strong>${ratio.toFixed(2)}%</strong>입니다.<br>
-                (기준: 10% 이상)<br>
-                공시팀에 즉시 통지해주십시오.
+                🚨 <strong>[의무 공시] 대상입니다.</strong><br><br>
+                비율: <strong>${ratio.toFixed(2)}%</strong> (기준: 10% 이상)<br>
+                <br>
+                <span style="font-weight:bold; text-decoration:underline;">공시IR팀으로 사전 통지바랍니다.</span>
+            `;
+        } else if (ratio > 9) {
+            // 9% 초과 ~ 10% 미만: 자율 공시 검토 (주의)
+            resultDiv.className = 'result-warning';
+            resultDiv.innerHTML = `
+                ⚠️ <strong>[자율 공시] 검토 구간입니다.</strong><br><br>
+                비율: <strong>${ratio.toFixed(2)}%</strong> (9% 초과)<br>
+                의무 공시는 아니나, 자율공시 사항이므로<br>
+                <span style="font-weight:bold;">공시IR팀으로 사전 통지바랍니다.</span>
             `;
         } else {
-            resultDiv.className = 'safe';
+            // 9% 이하: 해당 없음
+            resultDiv.className = 'result-safe';
             resultDiv.innerHTML = `
-                ✅ <strong>자율 공시 대상입니다.</strong><br><br>
-                계약금액이 매출액의 <strong>${ratio.toFixed(2)}%</strong>입니다.<br>
-                (의무 공시 기준 10% 미만)<br>
-                필요 시 자율공시 여부를 검토하세요.
+                ✅ <strong>공시 의무 없음</strong><br><br>
+                비율: <strong>${ratio.toFixed(2)}%</strong><br>
+                (부서 전결 처리 가능)
             `;
         }
     }
