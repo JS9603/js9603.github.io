@@ -52,7 +52,7 @@
         }
         .tab-btn.active {
             color: #2c3e50;
-            border-bottom: 3px solid #e74c3c; /* 붉은 계열로 강조 */
+            border-bottom: 3px solid #e74c3c;
             background-color: white;
         }
         .tab-content {
@@ -100,7 +100,7 @@
             margin-top: 1rem;
         }
         .btn-save { background-color: #7f8c8d; color: white; }
-        .btn-check { background-color: #e74c3c; color: white; } /* 버튼도 경고색 */
+        .btn-check { background-color: #e74c3c; color: white; }
         button:hover { opacity: 0.9; }
 
         #result {
@@ -114,19 +114,16 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* 10% 이상 (즉시 공시) */
         .result-danger { 
             background-color: #fadbd8; 
             color: #c0392b; 
             border: 2px solid #e74c3c; 
         }
-        /* 5% ~ 10% (사업보고서 기재) */
         .result-warning { 
             background-color: #fdebd0; 
             color: #d35400; 
             border: 2px solid #e67e22; 
         }
-        /* 5% 미만 (안전) */
         .result-safe { 
             background-color: #d4efdf; 
             color: #1e8449; 
@@ -157,8 +154,8 @@
         <div class="form-group">
             <label>📂 분석 항목 선택</label>
             <select id="contractType">
-                <option value="revenue">단일판매ㆍ공급계약 (매출액 기준)</option>
-                <option value="asset">유형자산 취득ㆍ처분 (자산총액 기준)</option>
+                <option value="revenue">단일판매ㆍ공급계약</option>
+                <option value="asset">자산 취득ㆍ처분</option>
             </select>
         </div>
 
@@ -261,8 +258,8 @@
         const resultDiv = document.getElementById('result');
         resultDiv.style.display = 'block';
 
+        // 1. 공통 로직: 10% 이상이면 무조건 즉시 공시 대상 (자산/매출 불문)
         if (ratio >= 10) {
-            // 10% 이상: 즉시 공시 (강력 경고)
             resultDiv.className = 'result-danger';
             resultDiv.innerHTML = `
                 🚨 <strong>[즉시 공시] 대상입니다.</strong><br><br>
@@ -270,8 +267,9 @@
                 <br>
                 <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">즉시 공시IR팀으로 사전 통지바랍니다.</span>
             `;
-        } else if (ratio >= 5) {
-            // 5% 이상 ~ 10% 미만: 사업보고서 기재 (경고 준하는 주의)
+        } 
+        // 2. 매출(단일판매)인 경우: 5% 이상이면 사업보고서 기재 (주의)
+        else if (type === 'revenue' && ratio >= 5) {
             resultDiv.className = 'result-warning';
             resultDiv.innerHTML = `
                 📢 <strong>[사업보고서 기재] 대상입니다.</strong><br><br>
@@ -280,12 +278,14 @@
                 <br>
                 <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">반드시 공시IR팀으로 사전 통지바랍니다.</span>
             `;
-        } else {
-            // 5% 미만: 안전
+        } 
+        // 3. 그 외 (자산 10% 미만 OR 매출 5% 미만): 공시 의무 없음
+        else {
+            let limitText = (type === 'asset') ? "10% 미만" : "5% 미만";
             resultDiv.className = 'result-safe';
             resultDiv.innerHTML = `
                 ✅ <strong>공시 의무 없음</strong><br><br>
-                비율: <strong>${ratio.toFixed(2)}%</strong> (5% 미만)<br>
+                비율: <strong>${ratio.toFixed(2)}%</strong> (${limitText})<br>
             `;
         }
     }
