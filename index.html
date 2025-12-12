@@ -343,7 +343,7 @@
                 🚨 <strong>[의무 공시] 대상입니다.</strong><br><br>
                 비율: <strong>${ratio.toFixed(2)}%</strong> (${mandatoryLimit}% 이상)<br>
                 <br>
-                <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">즉시 공시IR팀으로 사전 통지바랍니다.</span>
+                <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">즉시 공시IR팀으로 통지바랍니다.</span>
             `;
         } else if (type === 'revenue' && ratio >= 5) {
             resultDiv.className = 'result-warning';
@@ -352,7 +352,7 @@
                 비율: <strong>${ratio.toFixed(2)}%</strong> (5% 이상)<br>
                 <span style="font-size:0.9rem;">주요 경영사항에 해당하므로</span><br>
                 <br>
-                <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">반드시 공시IR팀으로 사전 통지바랍니다.</span>
+                <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">반드시 공시IR팀으로 통지바랍니다.</span>
             `;
         } else {
             resultDiv.className = 'result-safe';
