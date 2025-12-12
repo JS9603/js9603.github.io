@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단일판매ㆍ공급계약 공시 판독기</title>
+    <style>
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box; /* 패딩 포함 너비 계산 */
+            text-align: right;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #2b6cb0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2c5282;
+        }
+        #result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+            text-align: center;
+            font-weight: bold;
+        }
+        .safe {
+            background-color: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        .danger {
+            background-color: #fed7d7;
+            color: #822727;
+            border: 1px solid #feb2b2;
+        }
+        .info-text {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📋 계약 공시 판독기</h2>
+    
+    <div class="form-group">
+        <label for="revenue">최근 사업연도 매출액 (원)</label>
+        <input type="text" id="revenue" placeholder="예: 33,000,000,000" onkeyup="inputNumberFormat(this)">
+        <div class="info-text">*연결 재무제표 기준 (별도인 경우 별도)</div>
+    </div>
+
+    <div class="form-group">
+        <label for="contract">금번 계약 금액 (원)</label>
+        <input type="text" id="contract" placeholder="계약금액 입력" onkeyup="inputNumberFormat(this)">
+        <div class="info-text">*VAT 포함 여부 확인 (통상 별도 기준)</div>
+    </div>
+
+    <button onclick="checkDisclosure()">판독 확인</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    // 숫자 3자리마다 콤마 찍기
+    function inputNumberFormat(obj) {
+        obj.value = comma(uncomma(obj.value));
+    }
+
+    function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
+
+    function uncomma(str) {
+        str = String(str);
+        return str.replace(/[^\d]+/g, '');
+    }
+
+    // 공시 여부 판단 로직
+    function checkDisclosure() {
+        const revenueStr = uncomma(document.getElementById('revenue').value);
+        const contractStr = uncomma(document.getElementById('contract').value);
+
+        if (!revenueStr || !contractStr) {
+            alert("매출액과 계약금액을 모두 입력해주세요.");
+            return;
+        }
+
+        const revenue = parseFloat(revenueStr);
+        const contract = parseFloat(contractStr);
+        
+        // 코스닥 공시 규정: 매출액의 10% 이상 (대규모법인은 5%이나, 일반적인 10% 적용)
+        const threshold = revenue * 0.10;
+        const ratio = (contract / revenue) * 100;
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+
+        if (contract >= threshold) {
+            resultDiv.className = 'danger';
+            resultDiv.innerHTML = `
+                🚨 <strong>공시 의무 대상입니다!</strong><br><br>
+                계약금액이 매출액의 <strong>${ratio.toFixed(2)}%</strong>입니다.<br>
+                (기준: 10% 이상)<br>
+                공시팀에 즉시 통지해주십시오.
+            `;
+        } else {
+            resultDiv.className = 'safe';
+            resultDiv.innerHTML = `
+                ✅ <strong>자율 공시 대상입니다.</strong><br><br>
+                계약금액이 매출액의 <strong>${ratio.toFixed(2)}%</strong>입니다.<br>
+                (의무 공시 기준 10% 미만)<br>
+                필요 시 자율공시 여부를 검토하세요.
+            `;
+        }
+    }
+</script>
+
+</body>
+</html>
