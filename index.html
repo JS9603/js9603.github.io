@@ -34,7 +34,6 @@
             font-size: 1.4rem;
             font-weight: 600;
         }
-        /* 탭 스타일 */
         .tabs {
             display: flex;
             background-color: #ecf0f1;
@@ -53,7 +52,7 @@
         }
         .tab-btn.active {
             color: #2c3e50;
-            border-bottom: 3px solid #3498db;
+            border-bottom: 3px solid #e74c3c; /* 붉은 계열로 강조 */
             background-color: white;
         }
         .tab-content {
@@ -63,7 +62,6 @@
         .tab-content.active {
             display: block;
         }
-        /* 폼 스타일 */
         .form-group {
             margin-bottom: 1.2rem;
         }
@@ -87,10 +85,9 @@
         select { text-align: left; }
         input:focus, select:focus {
             outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
         }
-        /* 버튼 스타일 */
         button.action-btn {
             width: 100%;
             padding: 1rem;
@@ -103,10 +100,9 @@
             margin-top: 1rem;
         }
         .btn-save { background-color: #7f8c8d; color: white; }
-        .btn-check { background-color: #3498db; color: white; }
+        .btn-check { background-color: #e74c3c; color: white; } /* 버튼도 경고색 */
         button:hover { opacity: 0.9; }
 
-        /* 결과창 스타일 */
         #result {
             margin-top: 1.5rem;
             padding: 1.2rem;
@@ -118,9 +114,24 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        .result-danger { background-color: #fadbd8; color: #c0392b; border: 1px solid #f1948a; }
-        .result-warning { background-color: #fef9e7; color: #b7950b; border: 1px solid #f7dc6f; }
-        .result-safe { background-color: #d4efdf; color: #1e8449; border: 1px solid #a9dfbf; }
+        /* 10% 이상 (즉시 공시) */
+        .result-danger { 
+            background-color: #fadbd8; 
+            color: #c0392b; 
+            border: 2px solid #e74c3c; 
+        }
+        /* 5% ~ 10% (사업보고서 기재) */
+        .result-warning { 
+            background-color: #fdebd0; 
+            color: #d35400; 
+            border: 2px solid #e67e22; 
+        }
+        /* 5% 미만 (안전) */
+        .result-safe { 
+            background-color: #d4efdf; 
+            color: #1e8449; 
+            border: 1px solid #a9dfbf; 
+        }
 
         .info-text {
             font-size: 0.85rem;
@@ -176,24 +187,19 @@
 </div>
 
 <script>
-    // 탭 전환 기능
     function openTab(tabName) {
-        // 모든 탭 컨텐츠 숨기기
         const contents = document.getElementsByClassName('tab-content');
         for (let i = 0; i < contents.length; i++) {
             contents[i].classList.remove('active');
         }
-        // 모든 탭 버튼 비활성화
         const btns = document.getElementsByClassName('tab-btn');
         for (let i = 0; i < btns.length; i++) {
             btns[i].classList.remove('active');
         }
-        // 선택된 탭 활성화
         document.getElementById(tabName).classList.add('active');
         event.currentTarget.classList.add('active');
     }
 
-    // 페이지 로드 시 데이터 불러오기
     window.onload = function() {
         const savedRevenue = localStorage.getItem('wisenut_revenue');
         const savedAsset = localStorage.getItem('wisenut_asset');
@@ -202,7 +208,6 @@
         if(savedAsset) document.getElementById('baseAsset').value = savedAsset;
     }
 
-    // 데이터 저장
     function saveData() {
         const revenue = document.getElementById('baseRevenue').value;
         const asset = document.getElementById('baseAsset').value;
@@ -211,11 +216,9 @@
         localStorage.setItem('wisenut_asset', asset);
         
         alert("✅ 기초 정보가 저장되었습니다.\n[계약 검토] 탭에서 바로 사용 가능합니다.");
-        // 자동으로 첫 번째 탭으로 이동
         document.getElementsByClassName('tab-btn')[0].click();
     }
 
-    // 콤마 찍기 유틸
     function inputNumberFormat(obj) {
         obj.value = comma(uncomma(obj.value));
     }
@@ -228,7 +231,6 @@
         return str.replace(/[^\d]+/g, '');
     }
 
-    // 판독 로직
     function checkDisclosure() {
         const type = document.getElementById('contractType').value;
         const contractAmountStr = uncomma(document.getElementById('contractAmount').value);
@@ -254,37 +256,36 @@
             baseName = "자산총액";
         }
 
-        // 비율 계산
         const ratio = (contractAmount / baseAmount) * 100;
         
         const resultDiv = document.getElementById('result');
         resultDiv.style.display = 'block';
 
-        // 판독 결과 출력
         if (ratio >= 10) {
-            // 10% 이상: 의무 공시
+            // 10% 이상: 즉시 공시 (강력 경고)
             resultDiv.className = 'result-danger';
             resultDiv.innerHTML = `
-                🚨 <strong>[의무 공시] 대상입니다.</strong><br><br>
-                비율: <strong>${ratio.toFixed(2)}%</strong> (기준: 10% 이상)<br>
+                🚨 <strong>[즉시 공시] 대상입니다.</strong><br><br>
+                비율: <strong>${ratio.toFixed(2)}%</strong> (10% 이상)<br>
                 <br>
-                <span style="font-weight:bold; text-decoration:underline;">공시IR팀으로 사전 통지바랍니다.</span>
+                <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">즉시 공시IR팀으로 사전 통지바랍니다.</span>
             `;
-        } else if (ratio > 9) {
-            // 9% 초과 ~ 10% 미만: 자율 공시 검토 (주의)
+        } else if (ratio >= 5) {
+            // 5% 이상 ~ 10% 미만: 사업보고서 기재 (경고 준하는 주의)
             resultDiv.className = 'result-warning';
             resultDiv.innerHTML = `
-                ⚠️ <strong>[자율 공시] 검토 구간입니다.</strong><br><br>
-                비율: <strong>${ratio.toFixed(2)}%</strong> (9% 초과)<br>
-                의무 공시는 아니나, 자율공시 사항이므로<br>
-                <span style="font-weight:bold;">공시IR팀으로 사전 통지바랍니다.</span>
+                📢 <strong>[사업보고서 기재] 대상입니다.</strong><br><br>
+                비율: <strong>${ratio.toFixed(2)}%</strong> (5% 이상)<br>
+                <span style="font-size:0.9rem;">주요 경영사항에 해당하므로</span><br>
+                <br>
+                <span style="font-weight:bold; text-decoration:underline; font-size:1.1em;">반드시 공시IR팀으로 사전 통지바랍니다.</span>
             `;
         } else {
-            // 9% 이하: 해당 없음
+            // 5% 미만: 안전
             resultDiv.className = 'result-safe';
             resultDiv.innerHTML = `
                 ✅ <strong>공시 의무 없음</strong><br><br>
-                비율: <strong>${ratio.toFixed(2)}%</strong><br>
+                비율: <strong>${ratio.toFixed(2)}%</strong> (5% 미만)<br>
             `;
         }
     }
