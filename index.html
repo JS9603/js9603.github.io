@@ -22,7 +22,7 @@
             width: 100%;
             max-width: 480px;
             overflow: hidden;
-            position: relative; /* 모달 위치 기준 */
+            position: relative;
         }
         .header {
             background-color: #2c3e50;
@@ -36,7 +36,6 @@
         }
         .header h2 { margin: 0; font-size: 1.4rem; font-weight: 600; }
         
-        /* 도움말 버튼 스타일 */
         .help-btn {
             position: absolute;
             right: 1.5rem;
@@ -55,9 +54,9 @@
         }
         .help-btn:hover { background: rgba(255, 255, 255, 0.4); }
 
-        /* 모달(팝업) 스타일 */
+        /* 모달 스타일 */
         .modal-overlay {
-            display: none; /* 평소엔 숨김 */
+            display: none;
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -68,14 +67,13 @@
         }
         .modal-content {
             background-color: white;
-            width: 85%;
-            max-height: 80%;
+            width: 80%;
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            overflow-y: auto; /* 내용 길면 스크롤 */
             position: relative;
             animation: slideUp 0.3s;
+            text-align: left;
         }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -88,33 +86,27 @@
             background: none;
             border: none;
         }
-        .modal-title {
+        
+        /* 동적 컨텐츠 스타일 */
+        #dynamicTitle {
             font-size: 1.1rem;
             font-weight: bold;
             color: #2c3e50;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid #ecf0f1;
+            border-bottom: 2px solid #3498db;
         }
-        
-        /* 모달 내부 설명 항목 스타일 */
-        .info-item { margin-bottom: 1rem; }
-        .info-item h4 {
-            margin: 0 0 0.3rem 0;
-            color: #3498db;
+        #dynamicDesc {
             font-size: 0.95rem;
-        }
-        .info-item p {
-            margin: 0;
-            font-size: 0.85rem;
             color: #555;
-            line-height: 1.4;
+            line-height: 1.6;
             background-color: #f8f9fa;
-            padding: 0.5rem;
-            border-radius: 6px;
+            padding: 1rem;
+            border-radius: 8px;
+            white-space: pre-line; /* 줄바꿈 반영 */
         }
 
-        /* 기존 스타일들 */
+        /* 탭 및 기타 스타일 (기존 유지) */
         .tabs { display: flex; background-color: #ecf0f1; border-bottom: 1px solid #ddd; }
         .tab-btn {
             flex: 1; padding: 1rem; border: none; background: none;
@@ -172,42 +164,13 @@
 <div class="container">
     <div class="header">
         <h2>✅ 공시 의무 체크리스트</h2>
-        <button class="help-btn" onclick="openModal()" title="공시 기준 가이드">❓</button>
+        <button class="help-btn" onclick="openModal()" title="현재 항목 도움말">❓</button>
     </div>
 
     <div id="infoModal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal(event)">&times;</button>
-            <div class="modal-title">📌 공시 항목별 기준 가이드</div>
-            
-            <div class="info-item">
-                <h4>1. 단일판매ㆍ공급계약</h4>
-                <p>
-                    단일 계약건의 수주총액을 기준으로 매출액의 5%를 넘는경우 공시의무가 발생하며 10%를 초과하는 경우는 당일 즉시 공시사항에 해당합니다. 공시누락에 해당하는 경우 벌점, 매매거래정지 등의 제재를 받을 수 있기 때문에, 반드시 계약서 날인 전 공시IR팀으로 통지 요청드립니다.
-                </p>
-            </div>
-            
-            <div class="info-item">
-                <h4>2. 유형자산 취득ㆍ처분</h4>
-                <p>
-                    건물, 서버, GPU 등의 유형자산을 매수하는 계약에 대해 자산총액의 10%를 넘는 건은 당일 공시의무가 발생합니다. 금액을 초과하는 경우 계약서 날인 전 반드시 공시IR팀으로 통지 요청드립니다.
-                </p>
-            </div>
-            
-            <div class="info-item">
-                <h4>3. 금전 차입ㆍ대여</h4>
-                <p>
-                    금융기관 차입, 사채 발행, 타인에 대한 금전 대여에 대하여 자기자본의 10%를 넘는 건은 당일 공시사항에 해당합니다. 해당 금액을 초과하는 경우, 반드시 공시IR팀으로 통지 요청드립니다.
-                </p>
-            </div>
-            
-            <div class="info-item">
-                <h4>4. 소송ㆍ경영분쟁</h4>
-                <p>
-                    회사가 피고·원고에 해당하는 소송의 건 또는 전·현 임직원 대상 횡령·배임 혐의 발생시, 의무 공시사항에 해당하며, 자기자본 5%를 넘는경우 당일 기한 공시사항에 해당하기 떄문에, 발생 즉시 공시IR팀에 통지 요청드립니다.
-                </p>
-            </div>
-        </div>
+            <div id="dynamicTitle"></div> <div id="dynamicDesc"></div>  </div>
     </div>
 
     <div class="tabs">
@@ -271,18 +234,45 @@
 </div>
 
 <script>
-    // 모달 관련 함수
+    // 📌 [관리자 작성란] 항목별 도움말 멘트를 여기서 수정하세요.
+    const guideData = {
+        'revenue': {
+            title: "📌 단일판매ㆍ공급계약 가이드",
+            content: "단일 계약건의 수주총액을 기준으로 매출액의 5%를 넘는경우 공시의무가 발생하며 10%를 초과하는 경우는 당일 즉시 공시사항에 해당합니다. 공시누락에 해당하는 경우 벌점, 매매거래정지 등의 제재를 받을 수 있기 때문에, 반드시 계약서 날인 전 공시IR팀으로 통지 요청드립니다."
+        },
+        'asset': {
+            title: "📌 유형자산 취득ㆍ처분 가이드",
+            content: "건물, 서버, GPU 등의 유형자산을 매수하는 계약에 대해 자산총액의 10%를 넘는 건은 당일 공시의무가 발생합니다. 금액을 초과하는 경우 계약서 날인 전 반드시 공시IR팀으로 통지 요청드립니다."
+        },
+        'borrowing': {
+            title: "📌 금전 차입ㆍ대여 가이드",
+            content: "금융기관 차입, 사채 발행, 타인에 대한 금전 대여에 대하여 자기자본의 10%를 넘는 건은 당일 공시사항에 해당합니다. 해당 금액을 초과하는 경우, 반드시 공시IR팀으로 통지 요청드립니다."
+        },
+        'litigation': {
+            title: "📌 소송ㆍ경영분쟁 가이드",
+            content: "회사가 피고·원고에 해당하는 소송의 건 또는 전·현 임직원 대상 횡령·배임 혐의 발생시, 의무 공시사항에 해당하며, 자기자본 5%를 넘는경우 당일 기한 공시사항에 해당하기 떄문에, 발생 즉시 공시IR팀에 통지 요청드립니다."
+        }
+    };
+
+    // 모달 열기 (선택된 항목에 맞춰 내용 변경)
     function openModal() {
-        document.getElementById('infoModal').style.display = 'flex';
+        const type = document.getElementById('contractType').value; // 현재 선택된 값 가져오기
+        const data = guideData[type]; // 위 guideData에서 해당 내용 찾기
+
+        if (data) {
+            document.getElementById('dynamicTitle').innerText = data.title;
+            document.getElementById('dynamicDesc').innerText = data.content;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
     }
+
     function closeModal(e) {
-        // 배경을 클릭했거나, 닫기 버튼을 클릭했을 때만 닫힘
         if (e.target.classList.contains('modal-overlay') || e.target.classList.contains('close-btn')) {
             document.getElementById('infoModal').style.display = 'none';
         }
     }
 
-    // 드래그 앤 드롭
+    // 드래그 앤 드롭 등 기존 기능 유지
     const dropZone = document.getElementById('dropZone');
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
     dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('drag-over'); });
