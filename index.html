@@ -30,29 +30,30 @@
             padding: 1.5rem;
             text-align: center;
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         .header h2 { margin: 0; font-size: 1.4rem; font-weight: 600; }
         
-        .help-btn {
-            position: absolute;
-            right: 1.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
+        /* 라벨과 도움말 버튼을 가로로 배치하기 위한 컨테이너 */
+        .label-header {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            transition: background 0.2s;
+            margin-bottom: 0.5rem;
         }
-        .help-btn:hover { background: rgba(255, 255, 255, 0.4); }
+        
+        /* 새로운 도움말 버튼 스타일 */
+        .help-trigger {
+            background: none;
+            border: none;
+            color: #3498db;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .help-trigger:hover { color: #2980b9; }
 
         /* 모달 스타일 */
         .modal-overlay {
@@ -87,7 +88,6 @@
             border: none;
         }
         
-        /* 동적 컨텐츠 스타일 */
         #dynamicTitle {
             font-size: 1.1rem;
             font-weight: bold;
@@ -103,10 +103,9 @@
             background-color: #f8f9fa;
             padding: 1rem;
             border-radius: 8px;
-            white-space: pre-line; /* 줄바꿈 반영 */
+            white-space: pre-line;
         }
 
-        /* 탭 및 기타 스타일 (기존 유지) */
         .tabs { display: flex; background-color: #ecf0f1; border-bottom: 1px solid #ddd; }
         .tab-btn {
             flex: 1; padding: 1rem; border: none; background: none;
@@ -119,7 +118,10 @@
         .tab-content { padding: 2rem; display: none; }
         .tab-content.active { display: block; }
         .form-group { margin-bottom: 1.2rem; }
-        label { display: block; margin-bottom: 0.5rem; color: #34495e; font-weight: 600; font-size: 0.95rem; }
+        
+        /* 라벨 스타일 (margin-bottom 제거 -> label-header에서 처리) */
+        label { margin-bottom: 0; color: #34495e; font-weight: 600; font-size: 0.95rem; }
+        
         input, select {
             width: 100%; padding: 0.8rem; border: 1px solid #dfe6e9;
             border-radius: 8px; font-size: 1rem; box-sizing: border-box;
@@ -164,13 +166,14 @@
 <div class="container">
     <div class="header">
         <h2>✅ 공시 의무 체크리스트</h2>
-        <button class="help-btn" onclick="openModal()" title="현재 항목 도움말">❓</button>
     </div>
 
     <div id="infoModal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal(event)">&times;</button>
-            <div id="dynamicTitle"></div> <div id="dynamicDesc"></div>  </div>
+            <div id="dynamicTitle"></div> 
+            <div id="dynamicDesc"></div> 
+        </div>
     </div>
 
     <div class="tabs">
@@ -180,7 +183,10 @@
 
     <div id="check" class="tab-content active">
         <div class="form-group">
-            <label>📂 분석 항목 선택</label>
+            <div class="label-header">
+                <label>📂 분석 항목 선택</label>
+                <button class="help-trigger" onclick="openModal()">❓ 가이드 보기</button>
+            </div>
             <select id="contractType">
                 <option value="revenue">단일판매ㆍ공급계약</option>
                 <option value="asset">유형자산 취득ㆍ처분</option>
@@ -190,7 +196,7 @@
         </div>
 
         <div class="form-group">
-            <label>💸 금번 건별 금액 (원)</label>
+            <label style="margin-bottom:0.5rem;">💸 금번 건별 금액 (원)</label>
             <input type="text" id="contractAmount" placeholder="금액 입력 (VAT 제외)" onkeyup="inputNumberFormat(this)">
         </div>
 
@@ -218,15 +224,15 @@
 
         <div style="border-top:1px solid #eee; padding-top:1.5rem;">
             <div class="form-group">
-                <label>🔒 현재 적용된 매출액</label>
+                <label style="margin-bottom:0.5rem;">🔒 현재 적용된 매출액</label>
                 <input type="text" id="baseRevenue" class="input-readonly" placeholder="파일을 업로드하세요" readonly>
             </div>
             <div class="form-group">
-                <label>🔒 현재 적용된 자산총액</label>
+                <label style="margin-bottom:0.5rem;">🔒 현재 적용된 자산총액</label>
                 <input type="text" id="baseAsset" class="input-readonly" placeholder="파일을 업로드하세요" readonly>
             </div>
             <div class="form-group">
-                <label>🔒 현재 적용된 자본총계</label>
+                <label style="margin-bottom:0.5rem;">🔒 현재 적용된 자본총계</label>
                 <input type="text" id="baseEquity" class="input-readonly" placeholder="파일을 업로드하세요" readonly>
             </div>
         </div>
@@ -254,10 +260,9 @@
         }
     };
 
-    // 모달 열기 (선택된 항목에 맞춰 내용 변경)
     function openModal() {
-        const type = document.getElementById('contractType').value; // 현재 선택된 값 가져오기
-        const data = guideData[type]; // 위 guideData에서 해당 내용 찾기
+        const type = document.getElementById('contractType').value;
+        const data = guideData[type];
 
         if (data) {
             document.getElementById('dynamicTitle').innerText = data.title;
@@ -272,7 +277,6 @@
         }
     }
 
-    // 드래그 앤 드롭 등 기존 기능 유지
     const dropZone = document.getElementById('dropZone');
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
     dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('drag-over'); });
@@ -344,7 +348,7 @@
     }
 
     function downloadTemplate() {
-        const template = { "revenue": "35000000000", "asset": "50000000000", "equity": "30000000000" };
+        const template = { "revenue": "원단위까지 입력, 숫자 이외는 지워주세요", "asset": "원단위까지 입력, 숫자 이외는 지워주세요", "equity": "원단위까지 입력, 숫자 이외는 지워주세요" };
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(template, null, 2));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
